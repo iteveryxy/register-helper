@@ -1,5 +1,6 @@
 package com.iney.registerer
 
+import com.iney.registerer.test.Test
 import net.fabricmc.api.ModInitializer
 import net.minecraft.util.Identifier
 import org.slf4j.LoggerFactory
