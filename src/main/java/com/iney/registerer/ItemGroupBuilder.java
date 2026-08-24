@@ -74,7 +74,7 @@ public class ItemGroupBuilder {
             throw new RuntimeException("ItemGroupBuilder must be setIconed with an icon before building");
 
 
-        ItemGroup build = FabricItemGroup.builder().displayName(Text.of(name))
+        ItemGroup build = FabricItemGroup.builder().displayName(Text.translatable("itemGroup." + MOD_ID + "." + identifierName))
                 .icon(icon::getDefaultStack)
                 .entries(this::pack)
                 .build();

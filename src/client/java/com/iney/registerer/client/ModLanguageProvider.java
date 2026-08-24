@@ -15,5 +15,6 @@ public class ModLanguageProvider extends FabricLanguageProvider {
     public void generateTranslations(RegistryWrapper.WrapperLookup registryLookup, TranslationBuilder translationBuilder) {
         RegisterHelperClient.getDataReceiver().itemStringHashMap.forEach(translationBuilder::add);
         RegisterHelperClient.getDataReceiver().blockStringHashMap.forEach(translationBuilder::add);
+        RegisterHelperClient.getDataReceiver().stringStringHashMap.forEach(translationBuilder::add);
     }
 }
