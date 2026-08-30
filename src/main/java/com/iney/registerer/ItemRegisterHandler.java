@@ -10,6 +10,7 @@ import net.minecraft.util.Identifier;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 
 /**
@@ -22,9 +23,9 @@ public class ItemRegisterHandler {
 
     private final String modId;
     private final List<Item> items;
-    private final HashMap<Item, String> translations;
+    private final HashMap<Item, HashMap<String, String>> translations;
 
-    public ItemRegisterHandler(String modId, List<Item> items, HashMap<Item, String> translations) {
+    public ItemRegisterHandler(String modId, List<Item> items, HashMap<Item, HashMap<String, String>> translations) {
         this.modId = modId;
         this.items = items;
         this.translations = translations;
@@ -40,14 +41,24 @@ public class ItemRegisterHandler {
     }
 
     /**
-     * 注册一个默认设置的主物品，并绑定翻译文本
+     * 注册一个默认设置的主物品，并绑定默认语言（{@link Registerer#DEFAULT_LANGUAGE}）的翻译文本
      * @param name 物品名称
      * @param translation 翻译文本
      * @return 注册后的 Item 实例
      */
     public Item register(String name, String translation) {
+        return register(name, Map.of(Registerer.DEFAULT_LANGUAGE, translation));
+    }
+
+    /**
+     * 注册一个默认设置的主物品，并绑定多语言翻译文本
+     * @param name 物品名称
+     * @param translations 翻译映射：语言代码 -> 翻译文本
+     * @return 注册后的 Item 实例
+     */
+    public Item register(String name, Map<String, String> translations) {
         Item item = register(name);
-        translations.put(item, translation);
+        this.translations.put(item, new HashMap<>(translations));
         return item;
     }
 
@@ -65,7 +76,7 @@ public class ItemRegisterHandler {
     }
 
     /**
-     * 使用自定义构造函数和设置注册物品，并绑定翻译文本
+     * 使用自定义构造函数和设置注册物品，并绑定默认语言（{@link Registerer#DEFAULT_LANGUAGE}）的翻译文本
      * @param name 物品名称
      * @param translation 翻译文本
      * @param constructor 物品构造函数
@@ -73,8 +84,20 @@ public class ItemRegisterHandler {
      * @return 注册后的 Item 实例
      */
     public Item registerWithSetting(String name, String translation, Function<Settings, Item> constructor, Settings settings) {
+        return registerWithSetting(name, Map.of(Registerer.DEFAULT_LANGUAGE, translation), constructor, settings);
+    }
+
+    /**
+     * 使用自定义构造函数和设置注册物品，并绑定多语言翻译文本
+     * @param name 物品名称
+     * @param translations 翻译映射：语言代码 -> 翻译文本
+     * @param constructor 物品构造函数
+     * @param settings 物品设置
+     * @return 注册后的 Item 实例
+     */
+    public Item registerWithSetting(String name, Map<String, String> translations, Function<Settings, Item> constructor, Settings settings) {
         Item item = registerWithSetting(name, constructor, settings);
-        translations.put(item, translation);
+        this.translations.put(item, new HashMap<>(translations));
         return item;
     }
 

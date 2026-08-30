@@ -12,9 +12,12 @@ object RegisterHelperDataGenerator : DataGeneratorEntrypoint {
 
 		val pack = fabricDataGenerator.createPack()
 		pack.addProvider { output: FabricDataOutput -> ModModelProvider(output) }
-		// 使用 RegistryDependentFactory 传入目标语言代码，从 RegisterHelperClient.targetLanguageCode 读取
-		pack.addProvider { output, registryLookup ->
-			ModLanguageProvider(output, RegisterHelperClient.targetLanguageCode, registryLookup)
+		// 为每个目标语言注册一个语言生成器：
+		// targetLanguages 为空时自动生成所有已绑定翻译的语言
+		RegisterHelperClient.resolveTargetLanguages().forEach { languageCode ->
+			pack.addProvider { output, registryLookup ->
+				ModLanguageProvider(output, languageCode, registryLookup)
+			}
 		}
 	}
 }

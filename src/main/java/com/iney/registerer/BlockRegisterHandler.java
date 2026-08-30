@@ -13,6 +13,7 @@ import net.minecraft.util.Identifier;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 
 /**
@@ -25,9 +26,9 @@ public class BlockRegisterHandler {
 
     private final String modId;
     private final List<Item> items;
-    private final HashMap<Block, String> translations;
+    private final HashMap<Block, HashMap<String, String>> translations;
 
-    public BlockRegisterHandler(String modId, List<Item> items, HashMap<Block, String> translations) {
+    public BlockRegisterHandler(String modId, List<Item> items, HashMap<Block, HashMap<String, String>> translations) {
         this.modId = modId;
         this.items = items;
         this.translations = translations;
@@ -43,14 +44,24 @@ public class BlockRegisterHandler {
     }
 
     /**
-     * 注册一个默认设置的方块，并绑定翻译文本
+     * 注册一个默认设置的方块，并绑定默认语言（{@link Registerer#DEFAULT_LANGUAGE}）的翻译文本
      * @param name 方块名称
      * @param translation 翻译文本
      * @return 注册后的 Block 实例
      */
     public Block register(String name, String translation) {
+        return register(name, Map.of(Registerer.DEFAULT_LANGUAGE, translation));
+    }
+
+    /**
+     * 注册一个默认设置的方块，并绑定多语言翻译文本
+     * @param name 方块名称
+     * @param translations 翻译映射：语言代码 -> 翻译文本
+     * @return 注册后的 Block 实例
+     */
+    public Block register(String name, Map<String, String> translations) {
         Block block = register(name);
-        translations.put(block, translation);
+        this.translations.put(block, new HashMap<>(translations));
         return block;
     }
 
@@ -74,7 +85,7 @@ public class BlockRegisterHandler {
     }
 
     /**
-     * 使用自定义构造函数和设置注册方块，并绑定翻译文本
+     * 使用自定义构造函数和设置注册方块，并绑定默认语言（{@link Registerer#DEFAULT_LANGUAGE}）的翻译文本
      * @param name 方块名称
      * @param translation 翻译文本
      * @param constructor 方块构造函数
@@ -82,8 +93,20 @@ public class BlockRegisterHandler {
      * @return 注册后的 Block 实例
      */
     public Block registerWithSetting(String name, String translation, Function<AbstractBlock.Settings, Block> constructor, AbstractBlock.Settings settings) {
+        return registerWithSetting(name, Map.of(Registerer.DEFAULT_LANGUAGE, translation), constructor, settings);
+    }
+
+    /**
+     * 使用自定义构造函数和设置注册方块，并绑定多语言翻译文本
+     * @param name 方块名称
+     * @param translations 翻译映射：语言代码 -> 翻译文本
+     * @param constructor 方块构造函数
+     * @param settings 方块设置
+     * @return 注册后的 Block 实例
+     */
+    public Block registerWithSetting(String name, Map<String, String> translations, Function<AbstractBlock.Settings, Block> constructor, AbstractBlock.Settings settings) {
         Block block = registerWithSetting(name, constructor, settings);
-        translations.put(block, translation);
+        this.translations.put(block, new HashMap<>(translations));
         return block;
     }
 }

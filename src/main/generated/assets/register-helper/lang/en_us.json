@@ -1,6 +1,7 @@
 {
-  "block.test.block1": "测试方块1",
-  "item.test.item1": "测试物品1",
-  "item.test.item2": "测试物品2",
-  "itemGroup.test.test": "测试物品组"
+  "block.test.block1": "Test Block",
+  "item.test.item1": "Test Item 1",
+  "item.test.item2": "Test Item 2",
+  "item.test.shear": "Test Shears",
+  "itemGroup.test.test": "Test Group"
 }
