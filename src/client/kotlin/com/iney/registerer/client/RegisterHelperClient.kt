@@ -18,7 +18,6 @@ object RegisterHelperClient : ClientModInitializer {
 
 	override fun onInitializeClient() {
 		runDataGenerationSetup()
-		TestClient.onInitClient()
 	}
 
 	/**

@@ -1,6 +1,5 @@
 package com.iney.registerer
 
-import com.iney.registerer.test.Test
 import net.fabricmc.api.ModInitializer
 import net.minecraft.util.Identifier
 import org.slf4j.LoggerFactory
@@ -11,12 +10,7 @@ object RegisterHelper : ModInitializer {
 	private val LOGGER = LoggerFactory.getLogger(MOD_ID)
 
 	override fun onInitialize() {
-		// This code runs as soon as Minecraft is in a mod-load-ready state.
-		// However, some things (like resources) may still be uninitialized.
-		// Proceed with mild caution.
-
-		LOGGER.info("Hello Fabric world!")
-		Test.onInit()
+		LOGGER.info("RegisterHelper initialized")
 	}
 
 	fun id(path: String): Identifier
